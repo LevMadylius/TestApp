@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TestApp"
+             xmlns:VM="clr-namespace:TestApp.ViewModel"
+             x:Class="TestApp.MainPage">
+    <ContentPage.BindingContext>
+        <VM:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+        
+        <Grid RowSpacing="0" ColumnSpacing="1" MinimumHeightRequest="100">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Entry Grid.Row="0"  Grid.Column="0" Text="{Binding RequestStringURL}"/>
+                <Button Grid.Row="0" Grid.Column="1" Text="Get" Command="{Binding GetCommand}"/>
+          </Grid>
+
+            <Label Text="{Binding StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
+        <WebView Source="{Binding ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding IsFileContentVisible}"/>
+
+
+        <ScrollView Orientation="Vertical" VerticalOptions="Start" IsVisible="{Binding IsFolderContentVisible}">
+            <ScrollView.Content>
+                <StackLayout x:Name="Content" Orientation="Vertical" Margin="2" Padding="2"  VerticalOptions="Fill" >
+                    <Label FontSize="Large" Text="Folder info"/>
+
+                    <Label Text="{Binding ContainerInfo.Dev,StringFormat='Dev: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Mode,StringFormat='Mode: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Nlink,StringFormat='Nlink: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Uid,StringFormat='Uid: {0}'}"/>
+
+                    <Label Text="{Binding ContainerInfo.Gid,StringFormat='Gid: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Rdev,StringFormat='Rdev: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Blksize,StringFormat='Blksize: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Ino,StringFormat='Ino: {0}'}"/>
+
+                    <Label Text="{Binding ContainerInfo.Size,StringFormat='Size: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Blocks,StringFormat='Blocks: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.AtimeMs,StringFormat='AtimeMs: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.MtimeMs,StringFormat='MtimeMs: {0}'}"/>
+
+                    <Label Text="{Binding ContainerInfo.CtimeMs,StringFormat='CtimeMs: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.BirthtimeMs,StringFormat='BirthtimeMs: {0}'}"/>
+
+                    <Label Text="{Binding ContainerInfo.Atime,StringFormat='Atime: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Mtime,StringFormat='Mtime: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Ctime,StringFormat='Ctime: {0}'}"/>
+                    <Label Text="{Binding ContainerInfo.Birthtime,StringFormat='Birthtime: {0}'}"/>
+
+                    <Label Text="{Binding ContainerInfo.Path,StringFormat='Path: {0}'}"/>
+
+
+                    <Label Text="{Binding SomeString}"/>
+                   
+                    
+                </StackLayout>
+            </ScrollView.Content>
+        </ScrollView>
+
+        <Label Text="Folder content:" HorizontalOptions="Center" FontSize="Large" IsVisible="{Binding IsFolderContentVisible}"/>
+        <ListView Margin="2" ItemsSource="{Binding FolderContentDictionary}" HasUnevenRows="True" VerticalOptions="Fill" IsVisible="{Binding IsFolderContentVisible}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Vertical" VerticalOptions="Fill" >
+                                <Label Text="{Binding Key, StringFormat='Name: {0}'}" FontSize="Medium"/>
+
+                                <Label Text="{Binding Value.Dev,StringFormat='Dev: {0}'}"/>
+                                <Label Text="{Binding Value.Mode,StringFormat='Mode: {0}'}"/>
+                                <Label Text="{Binding Value.Nlink,StringFormat='Nlink: {0}'}"/>
+                                <Label Text="{Binding Value.Uid,StringFormat='Uid: {0}'}"/>
+
+                                <Label Text="{Binding Value.Gid,StringFormat='Gid: {0}'}"/>
+                                <Label Text="{Binding Value.Rdev,StringFormat='Rdev: {0}'}"/>
+                                <Label Text="{Binding Value.Blksize,StringFormat='Blksize: {0}'}"/>
+                                <Label Text="{Binding Value.Ino,StringFormat='Ino: {0}'}"/>
+
+                                <Label Text="{Binding Value.Size,StringFormat='Size: {0}'}"/>
+                                <Label Text="{Binding Value.Blocks,StringFormat='Blocks: {0}'}"/>
+                                <Label Text="{Binding Value.AtimeMs,StringFormat='AtimeMs: {0}'}"/>
+                                <Label Text="{Binding Value.MtimeMs,StringFormat='MtimeMs: {0}'}"/>
+
+                                <Label Text="{Binding Value.CtimeMs,StringFormat='CtimeMs: {0}'}"/>
+                                <Label Text="{Binding Value.BirthtimeMs,StringFormat='BirthtimeMs: {0}'}"/>
+
+                                <Label Text="{Binding Value.Atime,StringFormat='Atime: {0}'}"/>
+                                <Label Text="{Binding Value.Mtime,StringFormat='Mtime: {0}'}"/>
+                                <Label Text="{Binding Value.Ctime,StringFormat='Ctime: {0}'}"/>
+                                <Label Text="{Binding Value.Birthtime,StringFormat='Birthtime: {0}'}"/>
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+
+        </ListView>
+    </StackLayout>
+   
+</ContentPage>
