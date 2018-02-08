@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resource\File.png" />
+    <None Remove="Resource\Folder.png" />
+    <None Remove="Resource\Info.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\File.png" />
+    <EmbeddedResource Include="Resource\Folder.png" />
+    <EmbeddedResource Include="Resource\Info.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
   </ItemGroup>

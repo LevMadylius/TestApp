@@ -154,7 +154,22 @@ namespace TestApp.ViewModel
                 }
             }
         }
-
+        private KeyValuePair<string, InfoContainer> _selectedItem;
+        public KeyValuePair<string,InfoContainer> SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                if(_selectedItem.Key != value.Key)
+                {
+                    _selectedItem = value;
+                    OnPropertyChanged("SelectedItem");
+                }
+            }
+        }
 
         public Dictionary<string, InfoContainer> _dictionary;
         public Dictionary<string, InfoContainer> FolderContentDictionary
@@ -172,6 +187,22 @@ namespace TestApp.ViewModel
             }
         }
 
+        public ImageSource _imageSource;
+        public ImageSource ImageSource
+        {
+            get
+            {
+                _imageSource = ImageSource.FromResource(SelectImagePath());
+                return _imageSource;
+            }
+            set
+            {
+                if(_imageSource != value)
+                {
+                    _imageSource = value;
+                }
+            }
+        }
 
         #endregion
         public ICommand GetCommand { get; set; }
@@ -188,6 +219,13 @@ namespace TestApp.ViewModel
                     _infoCommand = value;
             }
         }
+
+        private string SelectImagePath()
+        {
+            return "TestApp.Resource.Folder.png";
+            //return (SelectedItem.Value.Isdir) ? "Resource/Folder.png" : "Resource/File.png";
+        }
+
 
         public MainViewModel()
         {

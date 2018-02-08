@@ -24,5 +24,6 @@ namespace TestApp.Model
         public DateTime Ctime { get; set; }
         public DateTime Birthtime { get; set; }
         public string Path { get; set; }
+        public bool Isdir { get; set; }
     }
 }
