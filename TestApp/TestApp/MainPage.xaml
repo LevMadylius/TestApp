@@ -25,7 +25,7 @@
             <Label Text="{Binding StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
         <WebView Source="{Binding ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding IsFileContentVisible}"/>
 
-        <ListView ItemsSource="{Binding FolderContentDictionary,Mode=TwoWay}">
+        <ListView x:Name="FolderView" ItemsSource="{Binding FolderContentDictionary,Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -33,7 +33,10 @@
                             <StackLayout Orientation="Horizontal">
                                 <Image/>
                                 <Label Text="{Binding Key}"/>
-                                <Button Command="{Binding InfoCommand}"/>
+                                <Button Text="Info"
+                                        BindingContext="{Binding Source={x:Reference FolderView},
+                                                                 Path=BindingContext}"
+                                        Command="{Binding InfoCommand,Mode=TwoWay}"/>
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>

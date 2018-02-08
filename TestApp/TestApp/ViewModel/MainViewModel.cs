@@ -176,12 +176,24 @@ namespace TestApp.ViewModel
         #endregion
         public ICommand GetCommand { get; set; }
 
-        public ICommand InfoCommand { get; set; }
+        private ICommand _infoCommand;
+        public ICommand InfoCommand {
+            get
+            {
+                return _infoCommand;
+            }
+            set
+            {
+                if (value != _infoCommand)
+                    _infoCommand = value;
+            }
+        }
 
         public MainViewModel()
         {
-            GetCommand = new Command(GetRequest);
             InfoCommand = new Command(DoSomething);
+            GetCommand = new Command(GetRequest);
+            
         }
 
         private async Task<bool> PingResource()
@@ -254,9 +266,9 @@ namespace TestApp.ViewModel
 
         }
 
-        private void DoSomething()
+        private  void DoSomething()
         {
-
+            bool resourceReachable = true;
         }
 
         private void StatusStringUpdate(bool visible,string text)
