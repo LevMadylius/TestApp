@@ -187,23 +187,6 @@ namespace TestApp.ViewModel
             }
         }
 
-        public ImageSource _imageSource;
-        public ImageSource ImageSource
-        {
-            get
-            {
-                _imageSource = ImageSource.FromResource(SelectImagePath());
-                return _imageSource;
-            }
-            set
-            {
-                if(_imageSource != value)
-                {
-                    _imageSource = value;
-                }
-            }
-        }
-
         #endregion
         public ICommand GetCommand { get; set; }
 
@@ -219,13 +202,6 @@ namespace TestApp.ViewModel
                     _infoCommand = value;
             }
         }
-
-        private string SelectImagePath()
-        {
-            return "TestApp.Resource.Folder.png";
-            //return (SelectedItem.Value.Isdir) ? "Resource/Folder.png" : "Resource/File.png";
-        }
-
 
         public MainViewModel()
         {
