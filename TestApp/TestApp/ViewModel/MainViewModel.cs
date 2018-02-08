@@ -176,9 +176,12 @@ namespace TestApp.ViewModel
         #endregion
         public ICommand GetCommand { get; set; }
 
+        public ICommand InfoCommand { get; set; }
+
         public MainViewModel()
         {
             GetCommand = new Command(GetRequest);
+            InfoCommand = new Command(DoSomething);
         }
 
         private async Task<bool> PingResource()
@@ -248,6 +251,11 @@ namespace TestApp.ViewModel
 
             }
 
+
+        }
+
+        private void DoSomething()
+        {
 
         }
 
