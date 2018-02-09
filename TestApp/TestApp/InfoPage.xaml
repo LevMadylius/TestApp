@@ -11,7 +11,7 @@
     <ContentPage.Content>
         <StackLayout>
 
-            <StackLayout x:Name="Content"
+            <StackLayout x:Name="ContentInfo"
                          Orientation="Vertical"
                          Margin="2" Padding="2"
                          VerticalOptions="Fill">

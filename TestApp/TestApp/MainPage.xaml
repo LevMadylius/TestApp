@@ -20,15 +20,15 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Entry Grid.Row="0"  Grid.Column="0" Text="{Binding RequestStringURL}"/>
-                <Button Grid.Row="0" Grid.Column="1" Text="Get" Command="{Binding GetCommand}"/>
+            <Entry Grid.Row="0"  Grid.Column="0" Text="{Binding PageModel.RequestStringURL}"/>
+            <Button Grid.Row="0" Grid.Column="1" Text="Get" Command="{Binding GetCommand}"/>
           </Grid>
 
-            <Label Text="{Binding StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
-        <WebView Source="{Binding ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding IsFileContentVisible}"/>
+        <Label Text="{Binding PageModel.StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
+        <WebView Source="{Binding PageModel.ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding PageModel.IsFileContentVisible}"/>
         
         <ListView x:Name="FolderView" 
-                  ItemsSource="{Binding FolderContentDictionary,Mode=TwoWay}"
+                  ItemsSource="{Binding ContentDictionary,Mode=TwoWay}"
                   SelectedItem="{Binding SelectedItem,Mode=TwoWay}">
             <ListView.Behaviors>
                 <behaviorsPack:EventToCommandBehavior

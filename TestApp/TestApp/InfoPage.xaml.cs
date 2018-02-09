@@ -9,7 +9,6 @@ using Xamarin.Forms.Xaml;
 
 namespace TestApp
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class InfoPage : ContentPage
 	{
 		public InfoPage ()

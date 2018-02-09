@@ -16,7 +16,14 @@ namespace TestApp.ViewModel
         public INavigation Navigation { get; set; }
 
         private DataService service = new DataService();
-        private MainPageModel PageModel = MainPageModel.Source;
+        private MainPageModel _pageModel;
+        public MainPageModel PageModel
+        {
+            get
+            {
+                return MainPageModel.Source;
+            }
+        } 
 
         public Dictionary<string, InfoContainer> _dictionary;
         public Dictionary<string, InfoContainer> ContentDictionary
@@ -29,7 +36,7 @@ namespace TestApp.ViewModel
                 if(value != _dictionary && value != null)
                 {
                     _dictionary = value;
-                    OnPropertyChanged("FolderContentDictionary");
+                    OnPropertyChanged("ContentDictionary");
                 }
             }
         }
@@ -70,7 +77,7 @@ namespace TestApp.ViewModel
             TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
         }
 
-        private async void OpenResource(KeyValuePair<string,InfoContainer> container)
+        private  void OpenResource(KeyValuePair<string,InfoContainer> container)
         {
             var something = container;
 
@@ -85,7 +92,7 @@ namespace TestApp.ViewModel
             {
                 return;
             }
-            if(!resourceReachable)
+            if (!resourceReachable)
             {
                 PageModel.StatusStringUpdate(true, "Cannot reach a resource");
                 return;

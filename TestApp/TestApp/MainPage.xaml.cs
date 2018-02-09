@@ -12,7 +12,7 @@ namespace TestApp
 		public MainPage()
 		{
 			InitializeComponent();
-            BindingContext = new TestApp.ViewModel.MainViewModel();
+            //BindingContext = new TestApp.ViewModel.MainViewModel();
 		}
 	}
 }
