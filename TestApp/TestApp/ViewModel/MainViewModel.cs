@@ -8,14 +8,15 @@ using TestApp.Model;
 using TestApp.Services;
 using Xamarin.Forms;
 using TestApp.Utils;
+
 namespace TestApp.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        public INavigation Navigation { get; set; }
+
         private DataService service = new DataService();
         private MainPageModel PageModel = MainPageModel.Source;
-        #region Properties
-        
 
         public Dictionary<string, InfoContainer> _dictionary;
         public Dictionary<string, InfoContainer> ContentDictionary
@@ -33,12 +34,11 @@ namespace TestApp.ViewModel
             }
         }
 
-        #endregion
+        public event PropertyChangedEventHandler PropertyChanged;
+        #region Commands and their handlers
         public ICommand GetCommand { get; set; }
 
-        private ICommand _infoCommand;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _infoCommand;   
 
         public ICommand InfoCommand {
             get
@@ -62,18 +62,21 @@ namespace TestApp.ViewModel
             
         }
 
-        private void OpenResource(KeyValuePair<string,InfoContainer> container)
+        public MainViewModel(INavigation navigation)
+        {
+            Navigation = navigation;
+            InfoCommand = new Command(DoSomething);
+            GetCommand = new Command(GetRequest);
+            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+        }
+
+        private async void OpenResource(KeyValuePair<string,InfoContainer> container)
         {
             var something = container;
-        }
-
-        private async Task<bool> PingResource()
-        {
-            bool result = await service.PingResource(_requestStringURL);
-            return result;
-
 
         }
+
+        
 
         private async void GetRequest()
         {
@@ -125,8 +128,14 @@ namespace TestApp.ViewModel
         {
             bool resourceReachable = true;
         }
+        #endregion
 
-        
+
+        private async Task<bool> PingResource()
+        {
+            bool result = await service.PingResource(PageModel.RequestStringURL);
+            return result;
+        }
         protected void OnPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

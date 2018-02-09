@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:VM="clr-namespace:TestApp.ViewModel"
+             x:Class="TestApp.InfoPage">
+
+    <ContentPage.BindingContext>
+        <VM:InfoViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            <StackLayout x:Name="Content"
+                         Orientation="Vertical"
+                         Margin="2" Padding="2"
+                         VerticalOptions="Fill">
+                <Label FontSize="Large" Text="Folder info"/>
+
+                <Label Text="{Binding Container.Dev,StringFormat='Dev: {0}'}"/>
+                <Label Text="{Binding Container.Mode,StringFormat='Mode: {0}'}"/>
+                <Label Text="{Binding Container.Nlink,StringFormat='Nlink: {0}'}"/>
+                <Label Text="{Binding Container.Uid,StringFormat='Uid: {0}'}"/>
+
+                <Label Text="{Binding Container.Gid,StringFormat='Gid: {0}'}"/>
+                <Label Text="{Binding Container.Rdev,StringFormat='Rdev: {0}'}"/>
+                <Label Text="{Binding Container.Blksize,StringFormat='Blksize: {0}'}"/>
+                <Label Text="{Binding Container.Ino,StringFormat='Ino: {0}'}"/>
+
+                <Label Text="{Binding Container.Size,StringFormat='Size: {0}'}"/>
+                <Label Text="{Binding Container.Blocks,StringFormat='Blocks: {0}'}"/>
+                <Label Text="{Binding Container.AtimeMs,StringFormat='AtimeMs: {0}'}"/>
+                <Label Text="{Binding Container.MtimeMs,StringFormat='MtimeMs: {0}'}"/>
+
+                <Label Text="{Binding Container.CtimeMs,StringFormat='CtimeMs: {0}'}"/>
+                <Label Text="{Binding Container.BirthtimeMs,StringFormat='BirthtimeMs: {0}'}"/>
+
+                <Label Text="{Binding Container.Atime,StringFormat='Atime: {0}'}"/>
+                <Label Text="{Binding Container.Mtime,StringFormat='Mtime: {0}'}"/>
+                <Label Text="{Binding Container.Ctime,StringFormat='Ctime: {0}'}"/>
+                <Label Text="{Binding Container.Birthtime,StringFormat='Birthtime: {0}'}"/>
+
+                <Label Text="{Binding Container.Path,StringFormat='Path: {0}'}"/>
+
+
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
