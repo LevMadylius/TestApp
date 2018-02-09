@@ -170,6 +170,23 @@ namespace TestApp.ViewModel
                 }
             }
         }
+        private bool _isInfoVisible = false;
+        public bool IsInfoVisible
+        {
+            get
+            {
+                return _isInfoVisible;
+            }
+            set
+            {
+                if(_isInfoVisible != value)
+                {
+                    _isInfoVisible = false;
+
+                    OnPropertyChanged("IsInfoVisible");
+                }
+            }
+        }
 
         public Dictionary<string, InfoContainer> _dictionary;
         public Dictionary<string, InfoContainer> FolderContentDictionary
@@ -203,11 +220,19 @@ namespace TestApp.ViewModel
             }
         }
 
+        public ICommand TapCommand;
+
         public MainViewModel()
         {
             InfoCommand = new Command(DoSomething);
             GetCommand = new Command(GetRequest);
+            TapCommand = new Command<InfoContainer>(OpenResource);
             
+        }
+
+        private void OpenResource(InfoContainer container)
+        {
+            var something = container.Atime;
         }
 
         private async Task<bool> PingResource()
