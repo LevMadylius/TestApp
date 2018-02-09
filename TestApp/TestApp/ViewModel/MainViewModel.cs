@@ -220,7 +220,7 @@ namespace TestApp.ViewModel
             }
         }
 
-        public ICommand TapCommand;
+        public ICommand TapCommand { get; set; }
 
         public MainViewModel()
         {
