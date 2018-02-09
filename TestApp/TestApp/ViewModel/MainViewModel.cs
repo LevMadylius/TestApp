@@ -5,191 +5,20 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TestApp.Model;
-using TestApp.Resource;
 using TestApp.Services;
 using Xamarin.Forms;
-
+using TestApp.Utils;
 namespace TestApp.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        DataService service = new DataService();
+        private DataService service = new DataService();
+        private MainPageModel PageModel = MainPageModel.Source;
         #region Properties
-        public event PropertyChangedEventHandler PropertyChanged;
-        private bool _isFileContentVisible = false;
-        public bool IsFileContentVisible {
-            get
-            {
-                return _isFileContentVisible;
-            }
-            set
-            {
-                if (value != _isFileContentVisible)
-                {
-                    _isFileContentVisible = value;
-                    OnPropertyChanged("IsFileContentVisible");
-                }
-            }
-        }
-
-        private bool _isFolderContentVisible = false;
-        public bool IsFolderContentVisible
-        {
-            get
-            {
-                return _isFolderContentVisible;
-            }
-            set
-            {
-                if (value != _isFolderContentVisible)
-                {
-                    _isFolderContentVisible = value;
-                    OnPropertyChanged("IsFolderContentVisible");
-                }
-            }
-        }
-
-        private bool _isStatusStringVisible = false;
-        public bool IsStatusStringVisible
-        {
-            get
-            {
-                return _isStatusStringVisible;
-            }
-            set
-            {
-                if (value != _isStatusStringVisible)
-                {
-                    _isStatusStringVisible = value;
-                    OnPropertyChanged("IsStatusStringVisible");
-                }
-            }
-        }
-
-        private InfoContainer _containerInfo;
-        public InfoContainer ContainerInfo
-        {
-            get
-            {
-                return _containerInfo;
-            }
-            set
-            {
-                if (_containerInfo != value && value != null)
-                {
-                    _containerInfo = value;
-                    OnPropertyChanged("ContainerInfo");
-                }
-            }
-        }
-
-        private bool isValidRequest
-        {
-            get
-            {
-
-                return CheckURI();
-            }
-        }
-        private string _requestStringURL = RequestString.URLstring;
-        public string RequestStringURL
-        {
-            get
-            {
-                return _requestStringURL;
-            }
-            set
-            {
-                if (_requestStringURL != value)
-                {
-                    _requestStringURL = value;
-                    OnPropertyChanged("RequestStringURL");
-
-                    if (!Uri.IsWellFormedUriString(_requestStringURL, UriKind.Absolute))
-                    {
-                        IsFileContentVisible = false;
-                        IsFolderContentVisible = false;
-                        StatusStringUpdate(true, "Uri is not correct");
-                    }
-                    else
-                    {
-                        StatusStringUpdate(false, null);
-                    }
-                }
-
-            }
-
-        }
-
-        private string _contentUrlString;
-        public string ContentUrlString
-        {
-            get
-            {
-                return _contentUrlString;
-            }
-            set
-            {
-                if (_contentUrlString != value)
-                {
-                    _contentUrlString = value;
-                    OnPropertyChanged("ContentUrlString");
-                }
-            }
-        }
-
-        private string _statusString;
-        public string StatusString
-        {
-            get
-            {
-                return _statusString;
-            }
-            set
-            {
-                if (_statusString != value)
-                {
-                    _statusString = value;
-                    OnPropertyChanged("StatusString");
-                }
-            }
-        }
-        private KeyValuePair<string, InfoContainer> _selectedItem;
-        public KeyValuePair<string,InfoContainer> SelectedItem
-        {
-            get
-            {
-                return _selectedItem;
-            }
-            set
-            {
-                if(_selectedItem.Key != value.Key)
-                {
-                    _selectedItem = value;
-                    OnPropertyChanged("SelectedItem");
-                }
-            }
-        }
-        private bool _isInfoVisible = false;
-        public bool IsInfoVisible
-        {
-            get
-            {
-                return _isInfoVisible;
-            }
-            set
-            {
-                if(_isInfoVisible != value)
-                {
-                    _isInfoVisible = false;
-
-                    OnPropertyChanged("IsInfoVisible");
-                }
-            }
-        }
+        
 
         public Dictionary<string, InfoContainer> _dictionary;
-        public Dictionary<string, InfoContainer> FolderContentDictionary
+        public Dictionary<string, InfoContainer> ContentDictionary
         { get
             {            
                 return _dictionary;
@@ -208,6 +37,9 @@ namespace TestApp.ViewModel
         public ICommand GetCommand { get; set; }
 
         private ICommand _infoCommand;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public ICommand InfoCommand {
             get
             {
@@ -226,13 +58,13 @@ namespace TestApp.ViewModel
         {
             InfoCommand = new Command(DoSomething);
             GetCommand = new Command(GetRequest);
-            TapCommand = new Command<InfoContainer>(OpenResource);
+            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
             
         }
 
-        private void OpenResource(InfoContainer container)
+        private void OpenResource(KeyValuePair<string,InfoContainer> container)
         {
-            var something = container.Atime;
+            var something = container;
         }
 
         private async Task<bool> PingResource()
@@ -243,64 +75,48 @@ namespace TestApp.ViewModel
 
         }
 
-        private bool CheckURI()
-        {
-            if (Uri.IsWellFormedUriString(_requestStringURL, UriKind.Absolute))
-            {
-                StatusStringUpdate(false, null);
-                return true;
-            }
-            else
-            {
-                IsFileContentVisible = false;
-                IsFolderContentVisible = false;
-                StatusStringUpdate(true, "Uri is not correct");
-                return false;
-            }
-        }
-
         private async void GetRequest()
         {
             bool resourceReachable = await PingResource();
-            if (!isValidRequest )
+            if (! RequestValidator.CheckURI(PageModel.RequestStringURL))
             {
                 return;
             }
             if(!resourceReachable)
             {
-                StatusStringUpdate(true, "Cannot reach a resource");
+                PageModel.StatusStringUpdate(true, "Cannot reach a resource");
                 return;
             }
-            var extension = Path.GetExtension(RequestStringURL);          
-            // indicates whether url has file extension
-            if(string.IsNullOrEmpty(extension))
+            try
             {
-                try
-                {
-                    IsFileContentVisible = false;
-                    IsFolderContentVisible = true;
-
-                    StatusStringUpdate(true, "Recieving information about folder");
-                    ContainerInfo = await service.GetInfoAsync<InfoContainer>(RequestStringURL) ?? null;
-                    StatusStringUpdate(true, "Recieving information about content of the folder");
-                    FolderContentDictionary = await service.GetContentInfoAsync<InfoContainer>(RequestStringURL) ?? null;
-                    StatusStringUpdate(false, "");
-
-
-                }
-                catch (Exception ex)
-                {
-                    StatusStringUpdate(true, ex.Message);
-                }
+                PageModel.StatusStringUpdate(true, "Recieving information about content of the folder");
+                ContentDictionary = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
+                PageModel.StatusStringUpdate(false, "");
             }
-            else
+            catch(Exception ex)
             {
-                IsFileContentVisible = true;
-                IsFolderContentVisible = false;
-
-                ContentUrlString = RequestStringURL;
-
+                PageModel.StatusStringUpdate(true, ex.Message);
             }
+            //var extension = Path.GetExtension(PageModel.RequestStringURL);          
+            //// indicates whether url has file extension
+            //if(string.IsNullOrEmpty(extension))
+            //{
+            //    try
+            //    {
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        StatusStringUpdate(true, ex.Message);
+            //    }
+            //}
+            //else
+            //{
+            //    IsFileContentVisible = true;
+            //    IsFolderContentVisible = false;
+
+            //    PageModel.ContentUrlString = RequestStringURL;
+
+            //}
 
 
         }
@@ -310,12 +126,7 @@ namespace TestApp.ViewModel
             bool resourceReachable = true;
         }
 
-        private void StatusStringUpdate(bool visible,string text)
-        {
-            IsStatusStringVisible = true;
-            StatusString = text;
-        }
-
+        
         protected void OnPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

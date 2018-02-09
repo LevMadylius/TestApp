@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:TestApp"
              xmlns:ext="clr-namespace:TestApp.Extension"
              xmlns:VM="clr-namespace:TestApp.ViewModel"
+             xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
              x:Class="TestApp.MainPage">
     <ContentPage.BindingContext>
         <VM:MainViewModel/>
@@ -25,10 +26,16 @@
 
             <Label Text="{Binding StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
         <WebView Source="{Binding ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding IsFileContentVisible}"/>
-
+        
         <ListView x:Name="FolderView" 
                   ItemsSource="{Binding FolderContentDictionary,Mode=TwoWay}"
                   SelectedItem="{Binding SelectedItem,Mode=TwoWay}">
+            <ListView.Behaviors>
+                <behaviorsPack:EventToCommandBehavior
+                    EventName="ItemTapped"
+                    Command="{Binding TapCommand}"
+                    EventArgsPropertyPath="Item"/>
+            </ListView.Behaviors>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
