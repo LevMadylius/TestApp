@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using TestApp.Model;
+﻿using TestApp.Model;
 
 namespace TestApp.ViewModel
 {

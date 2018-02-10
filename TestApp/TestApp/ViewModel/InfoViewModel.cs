@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using TestApp.Model;
+﻿using TestApp.Model;
 
 namespace TestApp.ViewModel
 {
