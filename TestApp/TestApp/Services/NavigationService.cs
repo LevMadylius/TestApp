@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using System.Linq;
+using TestApp.Model;
+
 namespace TestApp.Services
 {
     public class NavigationService : INavigationService
@@ -17,14 +16,14 @@ namespace TestApp.Services
         public async void NavigateToContent(string url)
         {
             var currentPage = GetCurrentPage();
-            // implement constructor with params
+
             await currentPage.Navigation.PushModalAsync(new MainPage(url));
         }
 
-        public async void NavigateToInfo<T>(T info)
+        public async void NavigateToInfo(InfoContainer info)
         {
             var currentPage = GetCurrentPage();
-            // implement constructor with params
+
             await currentPage.Navigation.PushModalAsync(new InfoPage(info));
         }
 

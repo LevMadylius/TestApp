@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using TestApp.Model;
 
 namespace TestApp.Services
 {
     public interface INavigationService
     {
         void NavigateToContent(string url);
-        void NavigateToInfo<T>(T info);
+        void NavigateToInfo(InfoContainer info);
         void NavigateBack();
     }
 }

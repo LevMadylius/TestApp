@@ -9,7 +9,6 @@
     <ContentPage.BindingContext>
         <VM:MainViewModel/>
     </ContentPage.BindingContext>
-
     <StackLayout>
         
         <Grid RowSpacing="0" ColumnSpacing="1" MinimumHeightRequest="100">
@@ -71,6 +70,7 @@
                                        HorizontalOptions="EndAndExpand">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding InfoCommand}"
+                                                              
                                                               BindingContext="{Binding Source={x:Reference FolderView},Path=BindingContext}"/>
                                     </Image.GestureRecognizers>
                                 </Image>

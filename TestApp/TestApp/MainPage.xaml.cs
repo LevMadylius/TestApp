@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace TestApp
 {
@@ -13,6 +8,14 @@ namespace TestApp
 		{
 			InitializeComponent();
             //BindingContext = new TestApp.ViewModel.MainViewModel();
+            
 		}
+
+        public MainPage(string url)
+        {
+            InitializeComponent();
+            BindingContext = new TestApp.ViewModel.MainViewModel(url);
+            var navigationCount = Navigation.NavigationStack.Count;
+        }
 	}
 }

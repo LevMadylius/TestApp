@@ -161,22 +161,22 @@ namespace TestApp.Model
         }
         #endregion
 
-        private static readonly MainPageModel _source = new MainPageModel();
+        //private static readonly MainPageModel _source = new MainPageModel();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static MainPageModel Source
-        {
-            get
-            {
-                return _source;
-            }
-        }
+        //public static MainPageModel Source
+        //{
+        //    get
+        //    {
+        //        return _source;
+        //    }
+        //}
 
-        private MainPageModel()
-        {
+        //private MainPageModel()
+        //{
 
-        }
+        //}
 
         public void StatusStringUpdate(bool visible, string text)
         {

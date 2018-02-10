@@ -8,6 +8,7 @@ using TestApp.Model;
 using TestApp.Services;
 using Xamarin.Forms;
 using TestApp.Utils;
+using System.Text;
 
 namespace TestApp.ViewModel
 {
@@ -16,12 +17,12 @@ namespace TestApp.ViewModel
         public INavigation Navigation { get; set; }
 
         private DataService service = new DataService();
-        private MainPageModel _pageModel;
+        private MainPageModel _pageModel = new MainPageModel();
         public MainPageModel PageModel
         {
             get
             {
-                return MainPageModel.Source;
+                return _pageModel;
             }
         } 
 
@@ -42,6 +43,33 @@ namespace TestApp.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        #region Constructors
+        public MainViewModel()
+        {
+            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
+            GetCommand = new Command(GetRequest);
+            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+
+        }
+
+        public MainViewModel(string url)
+        {
+            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
+            GetCommand = new Command(GetRequest);
+            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+            PageModel.RequestStringURL = url;
+            GetCommand.Execute(null);
+        }
+
+        public MainViewModel(INavigation navigation)
+        {
+            Navigation = navigation;
+            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
+            GetCommand = new Command(GetRequest);
+            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+        }
+        #endregion
+
         #region Commands and their handlers
         public ICommand GetCommand { get; set; }
 
@@ -61,29 +89,17 @@ namespace TestApp.ViewModel
 
         public ICommand TapCommand { get; set; }
 
-        public MainViewModel()
-        {
-            InfoCommand = new Command(DoSomething);
-            GetCommand = new Command(GetRequest);
-            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
-            
-        }
-
-        public MainViewModel(INavigation navigation)
-        {
-            Navigation = navigation;
-            InfoCommand = new Command(DoSomething);
-            GetCommand = new Command(GetRequest);
-            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
-        }
-
         private  void OpenResource(KeyValuePair<string,InfoContainer> container)
         {
-            var something = container;
+            StringBuilder builder = new StringBuilder();
+            builder.Append(PageModel.RequestStringURL);
+            builder.Append(container.Key);
+            var newURL = builder.ToString();
 
-        }
+            NavigationService navigationService = new NavigationService();
+            navigationService.NavigateToContent(newURL);
 
-        
+        }      
 
         private async void GetRequest()
         {
@@ -107,31 +123,9 @@ namespace TestApp.ViewModel
             {
                 PageModel.StatusStringUpdate(true, ex.Message);
             }
-            //var extension = Path.GetExtension(PageModel.RequestStringURL);          
-            //// indicates whether url has file extension
-            //if(string.IsNullOrEmpty(extension))
-            //{
-            //    try
-            //    {
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        StatusStringUpdate(true, ex.Message);
-            //    }
-            //}
-            //else
-            //{
-            //    IsFileContentVisible = true;
-            //    IsFolderContentVisible = false;
-
-            //    PageModel.ContentUrlString = RequestStringURL;
-
-            //}
-
-
         }
 
-        private  void DoSomething()
+        private  void OpenInfo(KeyValuePair<string,InfoContainer> container)
         {
             bool resourceReachable = true;
         }
