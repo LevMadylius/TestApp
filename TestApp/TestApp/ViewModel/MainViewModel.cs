@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace TestApp.ViewModel
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
         private DataService service = new DataService();
         private MainPageModel _pageModel = new MainPageModel();
@@ -49,7 +49,8 @@ namespace TestApp.ViewModel
 
         public Dictionary<string,ItemViewModel>_dictionary;
         public Dictionary<string,ItemViewModel> ContentDictionary
-        { get
+        {
+            get
             {            
                 return _dictionary;
             }
@@ -63,7 +64,6 @@ namespace TestApp.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         #region Constructors
         public MainViewModel()
         {
@@ -103,8 +103,6 @@ namespace TestApp.ViewModel
 
         public ICommand TapCommand { get; set; }
 
-        
-
         private void OpenResource(KeyValuePair<string, ItemViewModel> container)
         {
             if (++PageModel.TapCount % 2 == 0)
@@ -137,7 +135,6 @@ namespace TestApp.ViewModel
             {
                 PageModel.StatusStringUpdate(true, "Recieving information about content of the folder");
                 var result = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
-                //ContentDictionary = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
                 ContentDictionary = ConvertResponceToDictionary(result);
                 PageModel.StatusStringUpdate(false, "");
             }
@@ -169,10 +166,6 @@ namespace TestApp.ViewModel
         {
             bool result = await service.PingResource(PageModel.RequestStringURL);
             return result;
-        }
-        protected void OnPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

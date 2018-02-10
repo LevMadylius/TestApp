@@ -3,10 +3,8 @@ using TestApp.Model;
 
 namespace TestApp.ViewModel
 {
-    public class InfoViewModel : INotifyPropertyChanged
+    public class InfoViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private InfoContainer _container;
         public InfoContainer Container
         {
@@ -32,11 +30,6 @@ namespace TestApp.ViewModel
         public InfoViewModel()
         {
             
-        }
-
-        protected void OnPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

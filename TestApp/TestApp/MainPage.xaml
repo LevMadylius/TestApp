@@ -24,7 +24,6 @@
           </Grid>
 
         <Label Text="{Binding PageModel.StatusString, Mode=TwoWay}" IsVisible="{Binding IsStatusStringVisible,Mode=TwoWay}"/>
-        <WebView Source="{Binding PageModel.ContentUrlString}" VerticalOptions="FillAndExpand" IsVisible="{Binding PageModel.IsFileContentVisible}"/>
         
         <ListView x:Name="FolderView" 
                   ItemsSource="{Binding ContentDictionary,Mode=TwoWay}"

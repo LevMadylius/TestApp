@@ -8,7 +8,7 @@ using TestApp.Model;
 
 namespace TestApp.ViewModel
 {
-    public class ItemViewModel : INotifyPropertyChanged
+    public class ItemViewModel : BaseViewModel
     {
         private InfoContainer _data;
         public InfoContainer Data
@@ -42,14 +42,6 @@ namespace TestApp.ViewModel
                     OnPropertyChanged("IsSeLected");
                 }
             }
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }
