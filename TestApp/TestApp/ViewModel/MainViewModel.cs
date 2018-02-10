@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TestApp.Model;
@@ -9,8 +7,6 @@ using TestApp.Services;
 using Xamarin.Forms;
 using TestApp.Utils;
 using System.Text;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace TestApp.ViewModel
 {
@@ -87,19 +83,7 @@ namespace TestApp.ViewModel
         #region Commands and their handlers
         public ICommand GetCommand { get; set; }
 
-        private ICommand _infoCommand;   
-
-        public ICommand InfoCommand {
-            get
-            {
-                return _infoCommand;
-            }
-            set
-            {
-                if (value != _infoCommand)
-                    _infoCommand = value;
-            }
-        }
+        public ICommand InfoCommand { get; set; }
 
         public ICommand TapCommand { get; set; }
 
@@ -113,7 +97,14 @@ namespace TestApp.ViewModel
                 var newURL = builder.ToString();
 
                 NavigationService navigationService = new NavigationService();
-                navigationService.NavigateToContent(newURL);
+                if (container.Value.Data.Isdir)
+                {
+                    navigationService.NavigateToFolder(newURL);
+                }
+                else
+                {
+                    navigationService.NavigateToFile(newURL);
+                }
                 PageModel.TapCount = 0;
             }
 

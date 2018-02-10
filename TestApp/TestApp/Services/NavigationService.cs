@@ -13,7 +13,14 @@ namespace TestApp.Services
             await currentPage.Navigation.PopModalAsync();
         }
 
-        public async void NavigateToContent(string url)
+        public async void NavigateToFile(string url)
+        {
+            var currentPage = GetCurrentPage();
+
+            await currentPage.Navigation.PushModalAsync(new FilePage(url));
+        }
+
+        public async void NavigateToFolder(string url)
         {
             var currentPage = GetCurrentPage();
 
