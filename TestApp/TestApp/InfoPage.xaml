@@ -15,7 +15,7 @@
                          Orientation="Vertical"
                          Margin="2" Padding="2"
                          VerticalOptions="Fill">
-                <Label FontSize="Large" Text="Folder info"/>
+                <Label FontSize="Large" Text="{Binding Name}"/>
 
                 <Label Text="{Binding Container.Dev,StringFormat='Dev: {0}'}"/>
                 <Label Text="{Binding Container.Mode,StringFormat='Mode: {0}'}"/>
@@ -39,9 +39,6 @@
                 <Label Text="{Binding Container.Mtime,StringFormat='Mtime: {0}'}"/>
                 <Label Text="{Binding Container.Ctime,StringFormat='Ctime: {0}'}"/>
                 <Label Text="{Binding Container.Birthtime,StringFormat='Birthtime: {0}'}"/>
-
-                <Label Text="{Binding Container.Path,StringFormat='Path: {0}'}"/>
-
 
             </StackLayout>
 

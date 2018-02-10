@@ -6,7 +6,7 @@ namespace TestApp.Services
     {
         void NavigateToFolder(string url);
         void NavigateToFile(string url);
-        void NavigateToInfo(InfoContainer info);
+        void NavigateToInfo(InfoContainer info, string name);
         void NavigateBack();
     }
 }

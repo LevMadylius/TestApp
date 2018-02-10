@@ -22,9 +22,27 @@ namespace TestApp.ViewModel
             }
         }
 
-        public InfoViewModel(InfoContainer container)
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
+
+        public InfoViewModel(InfoContainer container, string name)
         {
             Container = container;
+            Name = name;
         }
 
         public InfoViewModel()

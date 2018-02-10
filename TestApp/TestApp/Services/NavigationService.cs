@@ -27,11 +27,11 @@ namespace TestApp.Services
             await currentPage.Navigation.PushModalAsync(new MainPage(url));
         }
 
-        public async void NavigateToInfo(InfoContainer info)
+        public async void NavigateToInfo(InfoContainer info, string name)
         {
             var currentPage = GetCurrentPage();
 
-            await currentPage.Navigation.PushModalAsync(new InfoPage(info));
+            await currentPage.Navigation.PushModalAsync(new InfoPage(info, name));
         }
 
         private Page GetCurrentPage()

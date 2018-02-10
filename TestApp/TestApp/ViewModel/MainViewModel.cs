@@ -154,7 +154,7 @@ namespace TestApp.ViewModel
         private void OpenInfo()
         {
             NavigationService navigationService = new NavigationService();
-            navigationService.NavigateToInfo(SelectedItem.Value.Data);
+            navigationService.NavigateToInfo(SelectedItem.Value.Data,SelectedItem.Key);
         }
         #endregion
 

@@ -16,10 +16,10 @@ namespace TestApp
 			InitializeComponent ();
 		}
 
-        public InfoPage(InfoContainer info)
+        public InfoPage(InfoContainer info, string name)
         {
             InitializeComponent();
-            BindingContext = new TestApp.ViewModel.InfoViewModel(info);
+            BindingContext = new TestApp.ViewModel.InfoViewModel(info, name);
         }
 	}
 }
