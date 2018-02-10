@@ -6,40 +6,6 @@ namespace TestApp.Model
     public class MainPageModel: INotifyPropertyChanged
     {
         #region MainPageProperties
-        private bool _isFileContentVisible = false;
-        public bool IsFileContentVisible
-        {
-            get
-            {
-                return _isFileContentVisible;
-            }
-            set
-            {
-                if (value != _isFileContentVisible)
-                {
-                    _isFileContentVisible = value;
-                    OnPropertyChanged("IsFileContentVisible");
-                }
-            }
-        }
-
-        private bool _isFolderContentVisible = false;
-        public bool IsFolderContentVisible
-        {
-            get
-            {
-                return _isFolderContentVisible;
-            }
-            set
-            {
-                if (value != _isFolderContentVisible)
-                {
-                    _isFolderContentVisible = value;
-                    OnPropertyChanged("IsFolderContentVisible");
-                }
-            }
-        }
-
         private bool _isStatusStringVisible = false;
         public bool IsStatusStringVisible
         {
@@ -93,26 +59,10 @@ namespace TestApp.Model
                 }
             }
         }
-
         
         #endregion
-
-        //private static readonly MainPageModel _source = new MainPageModel();
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //public static MainPageModel Source
-        //{
-        //    get
-        //    {
-        //        return _source;
-        //    }
-        //}
-
-        //private MainPageModel()
-        //{
-
-        //}
 
         public void StatusStringUpdate(bool visible, string text)
         {

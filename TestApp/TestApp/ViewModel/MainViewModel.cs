@@ -93,16 +93,21 @@ namespace TestApp.ViewModel
             {
                 StringBuilder builder = new StringBuilder();
                 builder.Append(PageModel.RequestStringURL);
-                builder.Append(container.Key);
-                var newURL = builder.ToString();
+                string newURL;
 
                 NavigationService navigationService = new NavigationService();
                 if (container.Value.Data.Isdir)
                 {
+                    builder.Append(container.Key);
+                    newURL = builder.ToString();
                     navigationService.NavigateToFolder(newURL);
+                    
                 }
                 else
                 {
+                    builder.Append("/");
+                    builder.Append(container.Key);
+                    newURL = builder.ToString();
                     navigationService.NavigateToFile(newURL);
                 }
                 PageModel.TapCount = 0;
@@ -112,6 +117,7 @@ namespace TestApp.ViewModel
 
         private async void GetRequest()
         {
+            PageModel.StatusStringUpdate(true, "Pinging Resource...");
             bool resourceReachable = await PingResource();
             if (!RequestValidator.CheckURI(PageModel.RequestStringURL))
             {
