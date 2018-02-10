@@ -9,13 +9,13 @@ using TestApp.Services;
 using Xamarin.Forms;
 using TestApp.Utils;
 using System.Text;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace TestApp.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        public INavigation Navigation { get; set; }
-
         private DataService service = new DataService();
         private MainPageModel _pageModel = new MainPageModel();
         public MainPageModel PageModel
@@ -24,10 +24,31 @@ namespace TestApp.ViewModel
             {
                 return _pageModel;
             }
-        } 
+        }
 
-        public Dictionary<string, InfoContainer> _dictionary;
-        public Dictionary<string, InfoContainer> ContentDictionary
+        private KeyValuePair<string, ItemViewModel> _selectedItem;
+        public KeyValuePair<string, ItemViewModel> SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+
+                if (value.Key != _selectedItem.Key)
+                {
+                    if (_selectedItem.Value != null) _selectedItem.Value.IsSeLected = false;
+                    value.Value.IsSeLected = true;
+                    _selectedItem = value;
+                    PageModel.TapCount = 0;
+                    OnPropertyChanged("SelectedItem");
+                }
+            }
+        }
+
+        public Dictionary<string,ItemViewModel>_dictionary;
+        public Dictionary<string,ItemViewModel> ContentDictionary
         { get
             {            
                 return _dictionary;
@@ -46,28 +67,21 @@ namespace TestApp.ViewModel
         #region Constructors
         public MainViewModel()
         {
-            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
+            InfoCommand = new Command(OpenInfo);
             GetCommand = new Command(GetRequest);
-            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+            TapCommand = new Command<KeyValuePair<string, ItemViewModel>>(OpenResource);
 
         }
 
         public MainViewModel(string url)
         {
-            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
+            InfoCommand = new Command(OpenInfo);
             GetCommand = new Command(GetRequest);
-            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
+            TapCommand = new Command<KeyValuePair<string, ItemViewModel>>(OpenResource);
             PageModel.RequestStringURL = url;
             GetCommand.Execute(null);
         }
 
-        public MainViewModel(INavigation navigation)
-        {
-            Navigation = navigation;
-            InfoCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenInfo);
-            GetCommand = new Command(GetRequest);
-            TapCommand = new Command<KeyValuePair<string, InfoContainer>>(OpenResource);
-        }
         #endregion
 
         #region Commands and their handlers
@@ -89,22 +103,28 @@ namespace TestApp.ViewModel
 
         public ICommand TapCommand { get; set; }
 
-        private  void OpenResource(KeyValuePair<string,InfoContainer> container)
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(PageModel.RequestStringURL);
-            builder.Append(container.Key);
-            var newURL = builder.ToString();
+        
 
-            NavigationService navigationService = new NavigationService();
-            navigationService.NavigateToContent(newURL);
+        private void OpenResource(KeyValuePair<string, ItemViewModel> container)
+        {
+            if (++PageModel.TapCount % 2 == 0)
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.Append(PageModel.RequestStringURL);
+                builder.Append(container.Key);
+                var newURL = builder.ToString();
+
+                NavigationService navigationService = new NavigationService();
+                navigationService.NavigateToContent(newURL);
+                PageModel.TapCount = 0;
+            }
 
         }      
 
         private async void GetRequest()
         {
             bool resourceReachable = await PingResource();
-            if (! RequestValidator.CheckURI(PageModel.RequestStringURL))
+            if (!RequestValidator.CheckURI(PageModel.RequestStringURL))
             {
                 return;
             }
@@ -116,7 +136,9 @@ namespace TestApp.ViewModel
             try
             {
                 PageModel.StatusStringUpdate(true, "Recieving information about content of the folder");
-                ContentDictionary = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
+                var result = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
+                //ContentDictionary = await service.GetContentInfoAsync<InfoContainer>(PageModel.RequestStringURL) ?? null;
+                ContentDictionary = ConvertResponceToDictionary(result);
                 PageModel.StatusStringUpdate(false, "");
             }
             catch(Exception ex)
@@ -125,9 +147,20 @@ namespace TestApp.ViewModel
             }
         }
 
-        private  void OpenInfo(KeyValuePair<string,InfoContainer> container)
+        private Dictionary<string, ItemViewModel> ConvertResponceToDictionary(IDictionary<string, InfoContainer> container)
         {
-            bool resourceReachable = true;
+            Dictionary<string, ItemViewModel> result = new Dictionary<string, ItemViewModel>();
+            foreach(var el in container)
+            {
+                result.Add(el.Key, new ItemViewModel { Data = el.Value, IsSeLected = false });
+            }
+            return result;
+        }
+
+        private void OpenInfo()
+        {
+            NavigationService navigationService = new NavigationService();
+            navigationService.NavigateToInfo(SelectedItem.Value.Data);
         }
         #endregion
 

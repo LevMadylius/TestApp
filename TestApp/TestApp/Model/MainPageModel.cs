@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using TestApp.Resource;
 
 namespace TestApp.Model
@@ -59,24 +56,7 @@ namespace TestApp.Model
                 }
             }
         }
-
-        private InfoContainer _containerInfo;
-        public InfoContainer ContainerInfo
-        {
-            get
-            {
-                return _containerInfo;
-            }
-            set
-            {
-                if (_containerInfo != value && value != null)
-                {
-                    _containerInfo = value;
-                    OnPropertyChanged("ContainerInfo");
-                }
-            }
-        }
-
+        public int TapCount = 0;
         
         private string _requestStringURL = RequestString.URLstring;
         public string RequestStringURL
@@ -91,38 +71,10 @@ namespace TestApp.Model
                 {
                     _requestStringURL = value;
                     OnPropertyChanged("RequestStringURL");
-
-                    if (!Uri.IsWellFormedUriString(_requestStringURL, UriKind.Absolute))
-                    {
-                        IsFileContentVisible = false;
-                        IsFolderContentVisible = false;
-                        StatusStringUpdate(true, "Uri is not correct");
-                    }
-                    else
-                    {
-                        StatusStringUpdate(false, null);
-                    }
                 }
 
             }
 
-        }
-
-        private string _contentUrlString;
-        public string ContentUrlString
-        {
-            get
-            {
-                return _contentUrlString;
-            }
-            set
-            {
-                if (_contentUrlString != value)
-                {
-                    _contentUrlString = value;
-                    OnPropertyChanged("ContentUrlString");
-                }
-            }
         }
 
         private string _statusString;
@@ -142,23 +94,7 @@ namespace TestApp.Model
             }
         }
 
-        private bool _isInfoVisible = false;
-        public bool IsInfoVisible
-        {
-            get
-            {
-                return _isInfoVisible;
-            }
-            set
-            {
-                if (_isInfoVisible != value)
-                {
-                    _isInfoVisible = false;
-
-                    OnPropertyChanged("IsInfoVisible");
-                }
-            }
-        }
+        
         #endregion
 
         //private static readonly MainPageModel _source = new MainPageModel();
